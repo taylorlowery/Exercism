@@ -6,29 +6,21 @@ public static class PascalsTriangle
 {
     public static IEnumerable<IEnumerable<int>> Calculate(int rows)
     {
-        List<List<int>> triangle = new List<List<int>>();
-
-        while (triangle.Count() < rows)
+        for (int i = 1; i <= rows; i++)
         {
-            var nextRow = triangle.Count() > 0 ? buildRow(triangle.Last()) : new List<int>() { 1 };
-            triangle.Add(nextRow);
+            yield return buildRow(i);
         }
-
-        return triangle;
     }
 
-    public static List<int> buildRow(IEnumerable<int> previousRow)
+    public static IEnumerable<int> buildRow(int row)
     {
-        int[] newRow = new int[previousRow.Count() + 1];
+        yield return 1;
+        int column = 1;
 
-        for (int i = 0; i < newRow.Count(); i++)
+        for (int j = 1; j < row; j++)
         {
-            int n1 = i - 1 >= 0 ? previousRow.ElementAt(i - 1) : 0;
-            int n2 = i < previousRow.Count() ? previousRow.ElementAt(i) : 0;
-            newRow[i] = n1 + n2;
+            column = column * (row - j) / j;
+            yield return column;
         }
-
-        return newRow.ToList();
     }
-
 }
