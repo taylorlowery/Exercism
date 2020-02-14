@@ -11,9 +11,9 @@ public class HighScores
         _scores = list;
     }
 
-    public List<int> Scores() => _scores;
+    public List<int> Scores() => new List<int>(_scores);
 
-    public int Latest() => _scores.Last();
+    public int Latest() => _scores.LastOrDefault();
 
     public int PersonalBest() => _scores.Max();
 
