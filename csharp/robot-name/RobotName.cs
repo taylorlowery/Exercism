@@ -4,14 +4,13 @@ using System.Collections.Generic;
 public static class RobotRegistry
 {
     private static Random _rnd = new Random();
-    private static HashSet<string> ActiveRobots = new HashSet<string>();
+    private static HashSet<Robot> ActiveRobots = new HashSet<Robot>();
     
-    public static string GenerateNewRobot(){
-        string name = GenerateRobotName();
-        while(!ActiveRobots.Add(name)){
-            name = GenerateRobotName();
+    public static void RegisterRobot(Robot robot){
+        robot.RenameRobot(GenerateRobotName());
+        while(!ActiveRobots.Add(robot)){
+            robot.RenameRobot(GenerateRobotName());
         }
-        return name;
     }
 
     private static string GenerateRobotName(){
@@ -29,7 +28,10 @@ public static class RobotRegistry
     {
         // attempt to remove robot's name from registry whether or not it's present
         // we could track this bool to see if this was a rogue, unregistered robot, etc. 
-        bool removed = ActiveRobots.Remove(robot.Name);
+        if (!String.IsNullOrWhiteSpace(robot.Name))
+        {
+            bool removed = ActiveRobots.Remove(robot);
+        }
         // regardless, wipe robot's name and deactivate it.
         robot.DisableRobot();
     }
@@ -51,10 +53,8 @@ public class Robot
     {
         // remove robot's name from list of existing robots
         RobotRegistry.RemoveRobotFromRegistry(this);
-        // wipe current robot's memory (delete name)
-        MemoryWipe();
         // generate a new name and assign it to the current robot. 
-        _name = RobotRegistry.GenerateNewRobot();
+        RobotRegistry.RegisterRobot(this);
         // activate the robot
         ActivateRobot();
     }
@@ -63,6 +63,11 @@ public class Robot
     // I was thinking that the Robot Registry Bureau wouldn't want rogue robots to be active without being registered, 
     // so we prevent it from being active without the name
     // We can assume in a real robot there would be other methods that would only be possible if the robot were active
+
+    public void RenameRobot(string name)
+    {
+        _name = name;
+    }
 
     // prevent the robot from being activated without being registered
     public void ActivateRobot()
@@ -90,5 +95,21 @@ public class Robot
     public void MemoryWipe()
     {
         _name = String.Empty;
+    }
+
+    public override bool Equals(object obj)
+    {
+        Robot otherRobot = obj as Robot;
+        if (otherRobot == null)
+        {
+            return false;
+        }
+
+        return this.Name.Equals(otherRobot.Name);
+    }
+
+    public override int GetHashCode()
+    {
+        return this.Name.GetHashCode();
     }
 }
