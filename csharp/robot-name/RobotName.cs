@@ -4,11 +4,11 @@ using System.Collections.Generic;
 public static class RobotRegistry
 {
     private static Random _rnd = new Random();
-    private static HashSet<string> TheNamesOfAllRobots = new HashSet<string>();
+    private static HashSet<string> ActiveRobots = new HashSet<string>();
     
     public static string GenerateNewRobot(){
         string name = GenerateRobotName();
-        while(!TheNamesOfAllRobots.Add(name)){
+        while(!ActiveRobots.Add(name)){
             name = GenerateRobotName();
         }
         return name;
@@ -29,7 +29,7 @@ public static class RobotRegistry
     {
         // attempt to remove robot's name from registry whether or not it's present
         // we could track this bool to see if this was a rogue, unregistered robot, etc. 
-        bool removed = TheNamesOfAllRobots.Remove(robot.Name);
+        bool removed = ActiveRobots.Remove(robot.Name);
         // regardless, wipe robot's name and deactivate it.
         robot.DisableRobot();
     }
