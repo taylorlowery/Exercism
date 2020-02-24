@@ -7,23 +7,15 @@ public static class Proverb
 {
     public static string[] Recite(string[] subjects)
     {
-        List<string> proverb = new List<string>();
+        string[] proverb = new string[0];
 
         if (subjects.Length > 0)
         {
-            for (int i = 0; i < subjects.Length - 1; i++)
-            {
-                proverb.Add(ProverbLine(subjects[i], subjects[i + 1]));
-            }
-
-            proverb.Add($"And all for the want of a {subjects.First()}.");
+            proverb = subjects.Zip(subjects.Skip(1), (a, b) => $"For want of a { a } the { b } was lost.").Append($"And all for the want of a { subjects.First() }.").ToArray();
         }
 
-
-        return proverb.ToArray();
+        return proverb;
     }
-
-
 
     public static string ProverbLine(string thing1, string thing2) => $"For want of a {thing1} the { thing2 } was lost.";
 }
