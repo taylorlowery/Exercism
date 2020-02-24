@@ -11,7 +11,10 @@ public static class Proverb
 
         if (subjects.Length > 0)
         {
-            proverb = subjects.Zip(subjects.Skip(1), (a, b) => $"For want of a { a } the { b } was lost.").Append($"And all for the want of a { subjects.First() }.").ToArray();
+            proverb = subjects
+                        .Zip(subjects.Skip(1), (a, b) => $"For want of a { a } the { b } was lost.")
+                        .Append($"And all for the want of a { subjects.First() }.")
+                        .ToArray();
         }
 
         return proverb;
