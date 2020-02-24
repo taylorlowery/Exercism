@@ -17,7 +17,7 @@ public static class RobotRegistry
         char a = GetRandomCharacter();
         char b = GetRandomCharacter();
         int digits = _rnd.Next(0, 1000);
-        string name = string.Format("{0}{1}{2:000}", a, b, digits);
+        string name = $"{a}{b}{digits:D3}";
         return name;
 
 
