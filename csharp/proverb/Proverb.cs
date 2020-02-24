@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public static class Proverb
 {
@@ -8,12 +9,16 @@ public static class Proverb
     {
         List<string> proverb = new List<string>();
 
-        for (int i = 0; i < subjects.Length - 1; i++)
+        if (subjects.Length > 0)
         {
-            proverb.Add(ProverbLine(subjects[i], subjects[i + 1]));
+            for (int i = 0; i < subjects.Length - 1; i++)
+            {
+                proverb.Add(ProverbLine(subjects[i], subjects[i + 1]));
+            }
+
+            proverb.Add($"And all for the want of a {subjects.First()}.");
         }
 
-        proverb.Add($"And all for the want of a {subjects[0]}.");
 
         return proverb.ToArray();
     }
