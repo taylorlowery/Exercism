@@ -1,14 +1,20 @@
+import 'package:collection/collection.dart';
+
 class Hamming {
-  // Put your code here
-  int distance(String strand1, String strand2){
-    int hamming = 0;
-
-    for(int i = 0; i < strand1.length; i++){
-      if (strand1[i] != strand2[i]){
-        hamming++;
-      }
+  int distance(String strand1, String strand2) {
+    int hammingDistance = 0;
+    if (strand1.length == 0 && strand1.length == strand2.length) {
+      return 0;
     }
-
-    return hamming;
+    if (strand1.length == 0 || strand2.length == 0) {
+      throw new ArgumentError('no strand must be empty');
+    }
+    if (strand1.length != strand2.length) {
+      throw new ArgumentError("left and right strands must be of equal length");
+    }
+    hammingDistance = new IterableZip([strand1.runes, strand2.runes])
+        .where((l) => l.first != l.last)
+        .length;
+    return hammingDistance;
   }
 }
