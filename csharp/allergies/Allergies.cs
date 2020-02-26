@@ -15,13 +15,14 @@ public enum Allergen
 }
 public class Allergies
 {
-    public IEnumerable<Allergen> Allergens = (IEnumerable<Allergen>)Enum.GetValues(typeof(Allergen));
+    IEnumerable<Allergen> Allergens = (IEnumerable<Allergen>)Enum.GetValues(typeof(Allergen));
 
     int _mask { get; set; }
     int Mask => _mask;
 
     public Allergies(int mask)
     {
+        // if the mask is higher than the sum of all allergens
         if (mask > Allergens.Sum(a => (int)a))
         {
             mask = mask - HighestPowerOfTwoLessThanNum(mask);
