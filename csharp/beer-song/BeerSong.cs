@@ -1,9 +1,18 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 
 public static class BeerSong
 {
     public static string Recite(int startBottles, int takeDown)
+    {
+        return BeerSongLinq(startBottles, takeDown);
+    }
+
+   
+
+    // a solution that uses a loop
+    public static string BeerSongLoop(int startBottles, int takeDown)
     {
         StringBuilder sb = new StringBuilder();
 
@@ -20,6 +29,17 @@ public static class BeerSong
 
 
         return sb.ToString();
+    }
+
+    // this solution doesn't work since they want a double space between verses
+    public static string BeerSongLinq(int startBottles, int takeDown)
+    {
+        return string.Concat(
+                Enumerable.Range(takeDown + 1, startBottles - takeDown)
+               .Reverse()
+               .Where(n => n > takeDown)
+               .Select(n => Verse(n) + "\n\n")
+               .Append(Verse(takeDown)));
     }
 
 
