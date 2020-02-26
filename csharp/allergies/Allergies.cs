@@ -15,7 +15,7 @@ public enum Allergen
 }
 public class Allergies
 {
-    public static IEnumerable<Allergen> Allergens = (IEnumerable<Allergen>)Enum.GetValues(typeof(Allergen));
+    public IEnumerable<Allergen> Allergens = (IEnumerable<Allergen>)Enum.GetValues(typeof(Allergen));
 
     int _mask { get; set; }
     int Mask => _mask;
@@ -39,7 +39,7 @@ public class Allergies
         var allergens = new List<Allergen>();
 
         int mask = Mask;
-        
+
         foreach (var allergen in Allergens.OrderByDescending(a => (int)a))
         {
             if (mask >= (int)allergen)
@@ -48,20 +48,12 @@ public class Allergies
                 mask -= (int)allergen;
             }
         }
-
+        
         return allergens.OrderBy(a => (int)a).ToArray();
     }
 
-    public int HighestPowerOfTwoLessThanNum(int num)
-    {
-        int powerOfTwo = 0;
-        int exponent = 0;
-        while (Math.Pow(2, exponent) < num)
-        {
-            powerOfTwo = (int)Math.Pow(2, exponent);
-            exponent++;
-        }
-
-        return powerOfTwo;
-    }
+    public int HighestPowerOfTwoLessThanNum(int num) => (int)(Enumerable.Range(0, num)
+                                                            .Select(s => Math.Pow(2, s))
+                                                                .TakeWhile(p => p < num)
+                                                                    .Max());
 }
