@@ -37,18 +37,23 @@ public static class RobotRegistry
     }
 }
 
-public class Robot
+public class Robot : IDisposable
 {
     private bool _active;
     private string _name;
     public string Name => _name;
     public bool Active => _active;
     
-    public Robot()
+    public Robot() => Reset();
+
+    ~Robot() => RobotRegistry.RemoveRobotFromRegistry(this);
+
+    public void Dispose()
     {
-        Reset();
+        RobotRegistry.RemoveRobotFromRegistry(this);
+        GC.SuppressFinalize(this);
     }
-    
+
     public void Reset()
     {
         // remove robot's name from list of existing robots
