@@ -1,18 +1,14 @@
 class Anagram {
-  Set getSetOfChars(String word) => Set.from(word.toLowerCase().split(''));
-  bool isSubSet(Set wordSet, Set wordSet2) =>
-      (wordSet.length == wordSet2.length && wordSet.containsAll(wordSet));
-  bool isWordSubset(String word, String word2) =>
-      isSubSet(getSetOfChars(word2), getSetOfChars(word2));
   List<String> findAnagrams(String word, List<String> possibleAnagrams) {
-    List<String> anagrams = [];
+    return possibleAnagrams.where((a) => isAnagram(word, a)).toList();
+  }
 
-    possibleAnagrams.forEach((f) {
-      if (isWordSubset(word, f)) {
-        anagrams.add(f);
-      }
-    });
+  bool isAnagram(String firstWord, String secondWord) {
+    return ((firstWord.length == secondWord.length) &&
+        (wordToCharSet(firstWord).containsAll(wordToCharSet(secondWord))));
+  }
 
-    return anagrams;
+  Set wordToCharSet(String word) {
+    return Set<String>.from(word.split(''));
   }
 }
