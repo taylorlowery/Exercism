@@ -1,44 +1,48 @@
 class PhoneNumber {
-  String clean(String phoneNumber){
-    RegExp nonNumber = new RegExp(r"\D");
-    RegExp punct = new RegExp(r"\p{P}-[()-]");
-    RegExp letters = new RegExp(r"[a-zA-Z]");
-    String cleanedPhoneNumber = phoneNumber.replaceAll(nonNumber, '');
+  String clean(String phoneNumber) {
+    RegExp nonDigit = new RegExp(r'(\D)');
+    RegExp punctuation = new RegExp(r'([,\/#!$%\^&\*;:{}=\_`~])');
+    RegExp wordCharacter = new RegExp(r'([A-Za-z])');
 
-    // remove if the number of characters is wrong.
-    if (cleanedPhoneNumber.length < 9){
-      throw FormatException('incorrect number of digits');
-    }
-    else if (cleanedPhoneNumber.length > 11){
-      throw FormatException('more than 11 digits');
-    }
-    else if (letters.hasMatch(phoneNumber)){
-      throw FormatException('letters not permitted');
-    }
-    else if (punct.hasMatch(phoneNumber)){
-      throw FormatException('punctuations not permitted');
+    if (punctuation.hasMatch(phoneNumber)) {
+      throw new FormatException('punctuations not permitted');
     }
 
-    // check country code and remove if valid
-    if(cleanedPhoneNumber.length == 11){
-      if(!cleanedPhoneNumber.startsWith('1')){
-        throw FormatException('11 digits must start with 1');
+    if (wordCharacter.hasMatch(phoneNumber)) {
+      throw new FormatException('letters not permitted');
+    }
+
+    //  Convert to a string
+    String cleanNumber = phoneNumber.replaceAll(nonDigit, "");
+
+    if (cleanNumber.length < 10) {
+      throw new FormatException('incorrect number of digits');
+    }
+    if (cleanNumber.length > 11) {
+      throw new FormatException('more than 11 digits');
+    }
+
+    if (cleanNumber.length == 11) {
+      if (cleanNumber[0] != '1') {
+        throw new FormatException('11 digits must start with 1');
+      } else {
+        cleanNumber = cleanNumber.substring(1);
       }
-      cleanedPhoneNumber = cleanedPhoneNumber.substring(1);
-    }
-    if(cleanedPhoneNumber.startsWith('0')){
-      throw FormatException('area code cannot start with zero');
-    }
-    if (cleanedPhoneNumber.startsWith('1')){
-      throw FormatException('area code cannot start with one');
-    }
-    if(cleanedPhoneNumber[3] == '0'){
-      throw FormatException('exchange code cannot start with zero');
-    }
-    if(cleanedPhoneNumber[3] == '1'){
-      throw FormatException('exchange code cannot start with one');
     }
 
-    return cleanedPhoneNumber;
+    if (cleanNumber[0] == '0') {
+      throw new FormatException('area code cannot start with zero');
+    }
+    if (cleanNumber[0] == '1') {
+      throw new FormatException('area code cannot start with one');
+    }
+    if (cleanNumber[3] == '0') {
+      throw new FormatException('exchange code cannot start with zero');
+    }
+    if (cleanNumber[3] == '1') {
+      throw new FormatException('exchange code cannot start with one');
+    }
+
+    return cleanNumber;
   }
 }
