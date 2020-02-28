@@ -9,6 +9,6 @@ class Anagram {
   }
 
   Set wordToCharSet(String word) {
-    return Set<String>.from(word.split(''));
+    return Set<String>.from(word.toLowerCase().split(''));
   }
 }
