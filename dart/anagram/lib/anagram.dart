@@ -3,9 +3,9 @@ class Anagram {
     return possibleAnagrams.where((a) => isAnagram(word, a)).toList();
   }
 
-  bool isAnagram(String firstWord, String secondWord) {
-    return ((firstWord.length == secondWord.length) &&
-        (wordToCharSet(firstWord).containsAll(wordToCharSet(secondWord))));
+  bool isAnagram(String word, String possibleAnagram) {
+    return ((word.length == possibleAnagram.length) &&
+        (wordToCharSet(word).containsAll(wordToCharSet(possibleAnagram))));
   }
 
   Set wordToCharSet(String word) {
