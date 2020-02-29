@@ -11,18 +11,11 @@ class Allergies {
   };
 
   bool allergicTo(String allergen, int score) {
-    return list(score).contains(allergen);
+    var n = Allergens[allergen];
+    return n & score > 0;
   }
 
   List<String> list(int score) {
-    List<String> allergens = [];
-
-    Allergens.forEach((k, v) {
-      if (v & score > 0) {
-        allergens.add(k);
-      }
-    });
-
-    return allergens;
+    return Allergens.keys.where((k) => allergicTo(k, score)).toList();
   }
 }
