@@ -1,12 +1,11 @@
 class Matrix:
-
-    __self__.matrix
-
     def __init__(self, matrix_string):
-        pass
+        self.matrix = []
+        for row in matrix_string.split('\n'):
+            self.matrix.append([int(i) for i in row.split(' ')])
 
     def row(self, index):
-        return index[]
+        return self.matrix[index - 1]
 
     def column(self, index):
-        pass
+        return [row[index - 1] for row in self.matrix]
