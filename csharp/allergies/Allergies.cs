@@ -17,30 +17,18 @@ public enum Allergen
 
 public class Allergies
 {
-    IEnumerable<Allergen> Allergens = (IEnumerable<Allergen>)Enum.GetValues(typeof(Allergen));
-
-    int _mask { get; set; }
-    byte Mask => (byte)_mask;
+    private byte Mask { get; set; }
 
     public Allergies(int mask)
     {
-        _mask = mask;
+        Mask = (byte)mask;
     }
 
     // determine if person has allergies
-    public bool IsAllergicTo(Allergen allergen) => this.List().Contains(allergen);
+    public bool IsAllergicTo(Allergen allergen) => (Mask & (byte)allergen) > 0;
 
     // List of allergens to which person is allergic
-    public IEnumerable<Allergen> List()
-    {
-        foreach (var allergen in Allergens)
-        {
-            if ((Mask & (byte)allergen) > 0)
-            {
-                yield return allergen;
-            }
-        }
-    }
+    public IEnumerable<Allergen> List() => ((IEnumerable<Allergen>)Enum.GetValues(typeof(Allergen))).Where(a => IsAllergicTo(a));
 }
 
 
