@@ -17,15 +17,15 @@ public enum Allergen
 
 public class Allergies
 {
-    private byte Mask { get; set; }
+    private byte _mask { get; set; }
 
     public Allergies(int mask)
     {
-        Mask = (byte)mask;
+        _mask = (byte)mask;
     }
 
     // determine if person has allergies
-    public bool IsAllergicTo(Allergen allergen) => (Mask & (byte)allergen) > 0;
+    public bool IsAllergicTo(Allergen allergen) => (_mask & (byte)allergen) > 0;
 
     // List of allergens to which person is allergic
     public IEnumerable<Allergen> List() => ((IEnumerable<Allergen>)Enum.GetValues(typeof(Allergen))).Where(a => IsAllergicTo(a));
