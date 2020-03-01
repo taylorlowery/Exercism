@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 [Flags]
-public enum Allergen
+public enum Allergen : uint
 {
     Eggs = 1,
     Peanuts = 2,
@@ -17,15 +17,12 @@ public enum Allergen
 
 public class Allergies
 {
-    private byte _mask { get; set; }
+    private Allergen _mask { get; set; }
 
-    public Allergies(int mask)
-    {
-        _mask = (byte)mask;
-    }
+    public Allergies(int mask) => _mask = (Allergen)mask;
 
     // determine if person has allergies
-    public bool IsAllergicTo(Allergen allergen) => (_mask & (byte)allergen) == (byte)allergen;
+    public bool IsAllergicTo(Allergen allergen) => _mask.HasFlag(allergen);
 
     // List of allergens to which person is allergic
     public IEnumerable<Allergen> List() => Enum.GetValues(typeof(Allergen)).Cast<Allergen>().Where(IsAllergicTo);
