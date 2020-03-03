@@ -1,3 +1,5 @@
 class Luhn {
-  // Put your code here
+  bool valid(String cardNumber) {
+    return false;
+  }
 }

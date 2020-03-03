@@ -3,9 +3,15 @@
             [clojure.math.numeric-tower :as math]))
 
 (defn num-to-digits [num]
-  (into [] (map #(Integer/parseInt %) (str/split (str num) #""))))
+      (->> num
+           (str)
+           (map #(Character/digit % 10))
+           (into [])))
 
 (defn armstrong? [num]
-  (let [digits (num-to-digits num)
-        exponent (count digits)]
-    (= num (reduce + (map #(math/expt % exponent) digits)))))
+      (let [digits (num-to-digits num)
+            exponent (count digits)]
+           (= num
+              (->> digits
+                   (map #(math/expt % exponent))
+                   (reduce +)))))
