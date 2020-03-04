@@ -4,14 +4,13 @@
 
 (defn num-to-digits [num]
       (->> num
-           (str)
-           (map #(Character/digit % 10))
-           (into [])))
+           str
+           (map #(Character/digit % 10))))
 
 (defn armstrong? [num]
       (let [digits (num-to-digits num)
             exponent (count digits)]
-           (= num
-              (->> digits
-                   (map #(math/expt % exponent))
-                   (reduce +)))))
+        (->> digits
+             (map #(math/expt % exponent))
+             (reduce +)
+             (= num))))
