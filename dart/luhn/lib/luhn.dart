@@ -1,8 +1,7 @@
 class Luhn {
   bool valid(String cardNumber){
     // remove spaces
-    RegExp exp = new RegExp(r"([ ])");
-    cardNumber = cardNumber.replaceAll(exp, '');
+    cardNumber = cardNumber.replaceAll(' ', '').replaceAll('-', '');
 
     // check for non digit characters
     RegExp nonDigit = new RegExp(r"\D+");
@@ -10,7 +9,7 @@ class Luhn {
       return false;
     }
 
-    // make sure it's at least two nubmers long
+    // make sure it's at least two numbers long
     if(cardNumber.length < 2){
       return false;
     }
@@ -19,32 +18,29 @@ class Luhn {
     List<int> numbers = cardNumberToList(cardNumber);
     numbers = luhnizedNumber(numbers);
     int sum = numbers.fold(0, (a, b) => (a + b));
-    if(sum % 10 == 0){
-      return true;
-    }
-    return false;
+    return sum % 10 == 0;
   }
 
   List<int> cardNumberToList(String cardNumber){
 
-    List<int> numbers = [];
-    var stringNums = cardNumber.split('');
-    for (var value in stringNums) {
-      var val = int.parse(value);
-      numbers.add(val);
-    }
-    return numbers;
+    return cardNumber.split('')
+                      .map((c) => int.parse(c))
+                      .toList();
   }
 
   List<int> luhnizedNumber(List<int> numbers){
-    for (int i = numbers.length - 2; i >= 0 ; i--){
-      if(i.isEven){
-        numbers[i] *= 2;
-        if (numbers[i] > 9){
-          numbers[i] -= 9;
-        }
-      }
-    }
-    return numbers;
+    return numbers
+            .asMap()
+            .map((key, value) {
+              if(key % 2 == 0){
+                return MapEntry(key, value);
+              }
+              else{
+                var newVal = value * 2;
+                return MapEntry(key, (newVal > 9 ? newVal - 9 : newVal));
+              }
+            })
+            .values
+            .toList();
   }
 }
