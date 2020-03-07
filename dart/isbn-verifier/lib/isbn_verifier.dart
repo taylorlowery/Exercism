@@ -1,36 +1,33 @@
-class IsbnVerifier {
-  bool isValid(String isbn) {
-    return false;
-  }
-}
+class IsbnVerifier {}
 
 bool isValid(String isbn) {
-  isbn = isbn.replaceAll("-", "");
+  isbn = isbn.replaceAll('-', '');
+  RegExp nonDigit = new RegExp(r"\D");
+  // check length
   if (isbn.length != 10) {
     return false;
   }
-  if (!(isbn.endsWith(r'\d') || (isbn.endsWith('X')))) {
+  // check for characters in first characters
+  if (nonDigit.hasMatch(isbn.substring(0, 8))) {
+    return false;
+  }
+  // make sure last character is int or X
+  if (nonDigit.hasMatch(isbn[9]) && !isbn.endsWith('X')) {
     return false;
   }
 
-  if (isbn.substring(0, isbn.length - 1).contains(r'\w')) {
-    return false;
-  }
+  int isbnSum = isbn
+      .split('')
+      .asMap()
+      .map((k, v) {
+        if (v == "X") {
+          v = "10";
+        }
+        int i = int.parse(v) * (k + 1);
+        return MapEntry(k, i);
+      })
+      .values
+      .fold(0, (int a, int b) => (a + b));
 
-  var nums = isbnInts(isbn);
-
-  return false;
-}
-
-List<int> isbnInts(String isbn) {
-  List<int> isbnInts = [];
-  var chars = isbn.split('');
-  for (int i = 0; i < chars.length; i++) {
-    if (chars[i] == 'X') {
-      isbnInts.add(10);
-    } else {
-      isbnInts.add(int.parse(chars[i]));
-    }
-  }
-  return isbnInts;
+  return isbnSum % 11 == 0;
 }
