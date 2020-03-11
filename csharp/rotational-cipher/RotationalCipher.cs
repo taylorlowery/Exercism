@@ -16,7 +16,7 @@ public static class RotationalCipher
         if (regex.IsMatch(letter.ToString())) {
             char newChar = (char)(letter + shift);
 
-            if ((letter <= 91 && 91 <= newChar) || (97 <= letter && 123 <= newChar))
+            if ((letter <= 'z' && 'z' <= newChar) || ('A' <= letter && 'Z' <= newChar))
             {
                 newChar -= (char)26;
             }
