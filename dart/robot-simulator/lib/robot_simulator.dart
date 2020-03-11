@@ -9,21 +9,14 @@ class Robot {
 
   Robot(this.position, this.orientation);
 
-  void move(String instructions){
-    instructions.split('').toList().forEach((f) => obey(f));
-  }
+  void move(String instructions) => instructions.split('').forEach((f) => obey(f));
 
   void obey(String movement){
-    switch(movement){
-      case 'A':
-        advance();
-        break;
-      case 'R':
-        turn(movement);
-        break;
-      case 'L':
-        turn(movement);
-        break;
+    if(movement == 'A'){
+      advance();
+    }
+    else{
+      turn(movement);
     }
   }
 
@@ -45,17 +38,8 @@ class Robot {
   }
 
   void turn(String direction){
-    int index = this.orientation.index;
 
-    switch(direction){
-      case 'R':
-        index++;
-        break;
-      case 'L':
-        index --;
-        break;
-    }
-
+    int index = direction == 'R' ? this.orientation.index + 1 : this.orientation.index - 1;
     this.orientation = Orientation.values[((orientation_len + index) % orientation_len)];
   }
 }
