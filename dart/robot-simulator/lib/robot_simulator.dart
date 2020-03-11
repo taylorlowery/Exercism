@@ -2,6 +2,7 @@ import 'package:robot_simulator/orientation.dart';
 import 'package:robot_simulator/position.dart';
 
 class Robot {
+  final int orientation_len = Orientation.values.length;
   // Put your code here
   Position position;
   Orientation orientation;
@@ -44,7 +45,8 @@ class Robot {
   }
 
   void turn(String direction){
-    int index = Orientation.values.indexOf(this.orientation);
+    int index = this.orientation.index;
+
     switch(direction){
       case 'R':
         index++;
@@ -54,14 +56,6 @@ class Robot {
         break;
     }
 
-    if(index < 0){
-      index = Orientation.values.length - 1;
-    }
-
-    if(index >= Orientation.values.length){
-      index = 0;
-    }
-
-    this.orientation = Orientation.values[index];
+    this.orientation = Orientation.values[((orientation_len + index) % orientation_len)];
   }
 }
