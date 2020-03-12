@@ -1,5 +1,3 @@
-import math
-
 
 def score(x, y):
     radius = hypoteneuse(x, y)
@@ -14,4 +12,4 @@ def score(x, y):
 
 
 def hypoteneuse(a, b):
-    return math.sqrt(a**2 + b**2)
+    return (a**2 + b**2) ** 0.5
