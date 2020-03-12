@@ -5,7 +5,6 @@ public class CircularBuffer<T>
 {
     T[] buffer;
     int readIndex;
-    int previousWriteIndex;
     int writeIndex;
     int oldestWriteIndex;
 
@@ -54,10 +53,7 @@ public class CircularBuffer<T>
 
     public void Clear() => buffer = new T[buffer.Length];
 
-    public int incrementIndex(int index)
-    {
-        return (index + 1) % buffer.Length;
-    }
+    public int incrementIndex(int index) => (index + 1) % buffer.Length;
 }
 
 public static class GenericExtensions
