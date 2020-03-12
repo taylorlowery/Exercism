@@ -1,5 +1,5 @@
 def get_factors(number):
-    return [x for x in range(1, number) if number % x == 0]
+    return [x for x in range(1, int(number / 2 + 1)) if number % x == 0]
 
 
 def classify(number):
