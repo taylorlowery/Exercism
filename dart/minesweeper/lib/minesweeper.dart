@@ -1,37 +1,65 @@
 class Minesweeper {
-  List<List<String>> board;
+  List<List<String>> board = [];
 
-  Minesweeper(List<String> boardArr){
-    this.board = parseBoard(boardArr);
+  Minesweeper([List<String> setup]) {
+    setup.forEach((f) {
+      print(f);
+      var subList = f.split('').toList();
+      this.board.add(subList);
+    });
   }
 
-  List<List<String>> parseBoard(List<String> boardArr){
-    List<List<String>> board = [];
-    boardArr.forEach((f) => board.add(f.split('')));
-    return board;
-  }
+  bool isMine(int x, int y) => board[x][y] == '*';
 
-  List<String> annoted(){
-    return [""];
-  }
+  int rowSum(int i, int j) {
+    int sum = 0;
 
-  String tileNum(List<String> board){
-    int val = 0;
-    for(int i = 0; i < board.length; i++){
-      for(int j = 0; j < board[i].length; j++){
+    // j - 1
+    if (j > 0) {
+      if (isMine(i, j - 1)) {
+        sum++;
+      }
+    }
+    // j
+    if (isMine(i, j)) {
+      sum++;
+    }
 
-        // above
-
-        // below
-
-        // left
-
-        // right
-
-
+    // j + 1
+    if (j < this.board[0].length - 1) {
+      if (isMine(i, j + 1)) {
+        sum++;
       }
     }
 
-    return val.toString();
+    return sum;
   }
- }
+
+  List<String> annoted() {
+    List<List<String>> parsedBoard = this.board;
+
+    for (int i = 0; i < this.board.length; i++) {
+      for (int j = 0; j < this.board[i].length; j++) {
+        if (parsedBoard[i][j] == ' ') {
+          int sum = 0;
+
+          // i - 1
+          if (i > 0) {
+            sum += rowSum(i - 1, j);
+          }
+
+          // i
+          sum += rowSum(i, j);
+          // i + 1
+          if (i < this.board.length - 1) {
+            sum += rowSum(i + 1, j);
+          }
+
+          parsedBoard[i][j] = sum > 0 ? sum.toString() : ' ';
+        }
+      }
+    }
+
+    return parsedBoard.map((l) => (l.join())).toList();
+  }
+}
