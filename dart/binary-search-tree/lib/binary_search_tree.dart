@@ -8,6 +8,23 @@ class BinarySearchTree {
   void insert(String val) {
     root.insert(new Node(val));
   }
+
+  List<String> sortedData() {
+    return this.root.left == null && this.root.right == null
+        ? [this.root.data]
+        : sortedNodeVals(root, []);
+  }
+}
+
+List<String> sortedNodeVals(Node node, List<String> acc) {
+  if (node.left != null) {
+    acc = sortedNodeVals(node.left, acc);
+  }
+  acc.add(node.data);
+  if (node.right != null) {
+    acc = sortedNodeVals(node.right, acc);
+  }
+  return acc;
 }
 
 class Node {
